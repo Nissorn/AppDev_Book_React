@@ -4,7 +4,7 @@ import iconEditTable from "../assets/images/iconEditTable.svg";
 import iconDelete from "../assets/images/iconDelete.svg";
 import iconEdit from "../assets/images/iconEdit.svg";
 
-const BookTable = () => {
+const BookTable = ({ refreshTrigger }) => {
   const [books, setBooks] = useState([]);
   const [showActions, setShowActions] = useState(false);
   const [editingBook, setEditingBook] = useState(null);
@@ -18,7 +18,7 @@ const BookTable = () => {
     axios.get("http://localhost:5001/books")
       .then(response => setBooks(response.data.books))
       .catch(error => console.error("Error fetching books:", error));
-  }, []);
+  }, [refreshTrigger]);
 
   const toggleActions = () => {
     setShowActions(!showActions);
