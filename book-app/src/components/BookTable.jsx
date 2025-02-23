@@ -58,9 +58,12 @@ const BookTable = ({ refreshTrigger }) => {
 
   const handleDelete = async (book) => {
     try {
-      await axios.delete(`http://localhost:5001/books/${book.title}`);
-      setBooks(books.filter(b => b.title !== book.title));
-      setDeleteConfirmation(null);
+      const response = await axios.delete(`http://localhost:5001/books/${book.title}`);
+      if (response.data.message === "Book deleted successfully") {
+        const updatedResponse = await axios.get("http://localhost:5001/books");
+        setBooks(updatedResponse.data.books);
+        setDeleteConfirmation(null);
+      }
     } catch (error) {
       console.error("Error deleting book:", error);
     }
