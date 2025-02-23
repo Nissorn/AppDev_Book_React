@@ -3,6 +3,7 @@ import axios from "axios";
 import iconEditTable from "../assets/images/iconEditTable.svg";
 import iconDelete from "../assets/images/iconDelete.svg";
 import iconEdit from "../assets/images/iconEdit.svg";
+import iconInsert from "../assets/images/iconInsert.svg";
 
 const BookTable = ({ refreshTrigger }) => {
   const [books, setBooks] = useState([]);
@@ -70,21 +71,21 @@ const BookTable = ({ refreshTrigger }) => {
   };
 
   return (
-    <div className="backdrop-blur-md bg-white/30 rounded-xl shadow-xl p-6 border border-white/20">
-      <h2 className="text-3xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600">Book List</h2>
-      <div className="overflow-x-auto rounded-lg">
-        <table className="min-w-full bg-white/40 backdrop-blur-sm border border-white/30">
+    <div className="backdrop-blur-xl bg-white/10 rounded-2xl shadow-2xl p-8 border border-white/20 contain-layout hover:shadow-purple-500/10 hover:border-white/30 transition-all duration-300">
+      <h2 className="text-3xl font-bold mb-6 text-gray-800">Book List</h2>
+      <div className="overflow-x-auto rounded-xl contain-paint">
+        <table className="min-w-full bg-white/5 backdrop-blur-xl border border-white/20 rounded-xl overflow-hidden">
           <thead>
-            <tr className="bg-gradient-to-r from-purple-500/40 to-blue-500/40 text-white">
-              <th className="border-b border-white/30 p-3 text-left">ID</th>
-              <th className="border-b border-white/30 p-3 text-left">Image</th>
-              <th className="border-b border-white/30 p-3 text-left">Title</th>
-              <th className="border-b border-white/30 p-3 text-left">Author</th>
-              <th className="border-b border-white/30 p-3 text-right">
+            <tr className="bg-gradient-to-r from-purple-600/30 to-blue-600/30 text-gray-800">
+              <th className="border-b border-white/20 p-4 text-left font-semibold">ID</th>
+              <th className="border-b border-white/20 p-4 text-left font-semibold">Image</th>
+              <th className="border-b border-white/20 p-4 text-left font-semibold">Title</th>
+              <th className="border-b border-white/20 p-4 text-left font-semibold">Author</th>
+              <th className="border-b border-white/20 p-4 text-right">
                 <img
                   src={iconEditTable}
                   alt="Toggle Actions"
-                  className={`w-6 h-6 cursor-pointer hover:opacity-80 inline-block transition-all duration-200 ${showActions ? 'filter hue-rotate-180 brightness-110' : ''}`}
+                  className={`w-6 h-6 cursor-pointer hover:opacity-80 inline-block transition-transform duration-300 ${showActions ? 'rotate-180' : ''}`}
                   onClick={toggleActions}
                 />
               </th>
@@ -92,28 +93,36 @@ const BookTable = ({ refreshTrigger }) => {
           </thead>
           <tbody>
             {books.map((book, index) => (
-              <tr key={index} className="border-b border-white/20 hover:bg-white/50 transition-all duration-200">
-                <td className="p-3">{index + 1}</td>
-                <td className="p-3">
-                  <img src={book.image_url} alt={book.title} className="h-20 rounded-lg shadow-md hover:scale-105 transition-transform duration-200" />
+              <tr key={index} className="border-b border-white/10 hover:bg-white/10 transition-all duration-300">
+                <td className="p-4 text-gray-800">{index + 1}</td>
+                <td className="p-4">
+                  <img src={book.image_url} alt={book.title} className="h-20 rounded-xl shadow-lg hover:scale-105 transition-transform duration-300 hover:shadow-purple-500/20" />
                 </td>
-                <td className="p-3 font-semibold text-gray-800">{book.title}</td>
-                <td className="p-3 text-gray-600">{book.author}</td>
+                <td className="p-4 font-semibold text-gray-800">{book.title}</td>
+                <td className="p-4 text-gray-700">{book.author}</td>
                 <td className="p-3 text-right">
                   {showActions && (
-                    <div className="flex justify-end gap-2">
-                      <img
-                        src={iconEdit}
-                        alt="Edit"
-                        className="w-6 h-6 cursor-pointer hover:opacity-80"
+                    <div className="flex justify-end gap-4 p-2 animate-fade-in">
+                      <button
+                        className="p-2 hover:bg-white/50 rounded-full transition-all duration-200"
                         onClick={() => handleEdit(book)}
-                      />
-                      <img
-                        src={iconDelete}
-                        alt="Delete"
-                        className="w-6 h-6 cursor-pointer hover:opacity-80"
+                      >
+                        <img
+                          src={iconEdit}
+                          alt="Edit"
+                          className="w-6 h-6 transform hover:scale-110 transition-all duration-200"
+                        />
+                      </button>
+                      <button
+                        className="p-2 hover:bg-white/50 rounded-full transition-all duration-200"
                         onClick={() => setDeleteConfirmation(book)}
-                      />
+                      >
+                        <img
+                          src={iconDelete}
+                          alt="Delete"
+                          className="w-6 h-6 transform hover:scale-110 transition-all duration-200"
+                        />
+                      </button>
                     </div>
                   )}
                 </td>
@@ -124,52 +133,52 @@ const BookTable = ({ refreshTrigger }) => {
       </div>
 
       {editingBook && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center">
-          <div className="bg-white rounded-lg p-6 w-96">
-            <h3 className="text-xl font-bold mb-4">Edit Book</h3>
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-md flex items-center justify-center z-50 animate-fade-in">
+          <div className="bg-white/10 backdrop-blur-xl rounded-2xl shadow-2xl p-8 w-96 border border-white/20 transform transition-all duration-300 animate-modal-in hover:shadow-purple-500/10 hover:border-white/30">
+            <h3 className="text-2xl font-bold mb-6 text-white">Edit Book</h3>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700">Title</label>
+                <label className="block text-sm font-medium text-white/90 mb-1">Title</label>
                 <input
                   type="text"
                   name="title"
                   value={editForm.title}
                   onChange={handleEditFormChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                  className="w-full px-4 py-2 rounded-xl border border-white/20 focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/50 bg-white/5 backdrop-blur-sm text-white placeholder-white/50 transition-all duration-300"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700">Author</label>
+                <label className="block text-sm font-medium text-white/90 mb-1">Author</label>
                 <input
                   type="text"
                   name="author"
                   value={editForm.author}
                   onChange={handleEditFormChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                  className="w-full px-4 py-2 rounded-xl border border-white/20 focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/50 bg-white/5 backdrop-blur-sm text-white placeholder-white/50 transition-all duration-300"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700">Image URL</label>
+                <label className="block text-sm font-medium text-white/90 mb-1">Image URL</label>
                 <input
                   type="text"
                   name="image_url"
                   value={editForm.image_url}
                   onChange={handleEditFormChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                  className="w-full px-4 py-2 rounded-xl border border-white/20 focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/50 bg-white/5 backdrop-blur-sm text-white placeholder-white/50 transition-all duration-300"
                 />
               </div>
-              <div className="flex justify-end gap-2">
+              <div className="flex justify-end gap-2 mt-6">
                 <button
                   onClick={() => setEditingBook(null)}
-                  className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
+                  className="px-6 py-2 text-sm font-medium text-white/90 bg-white/10 rounded-xl hover:bg-white/20 backdrop-blur-sm transition-all duration-300 border border-white/10 hover:border-white/20"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleUpdate}
-                  className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
+                  className="px-6 py-2 text-sm font-medium text-white bg-gradient-to-r from-purple-600/80 to-blue-600/80 rounded-xl hover:from-purple-600 hover:to-blue-600 transition-all duration-300 backdrop-blur-sm shadow-lg hover:shadow-purple-500/20"
                 >
-                  Save
+                  Save Changes
                 </button>
               </div>
             </div>
@@ -177,20 +186,20 @@ const BookTable = ({ refreshTrigger }) => {
         </div>
       )}
       {deleteConfirmation && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center">
-          <div className="bg-white rounded-lg p-6 w-96">
-            <h3 className="text-xl font-bold mb-4">Confirm Delete</h3>
-            <p className="text-gray-600 mb-4">Are you sure you want to delete "{deleteConfirmation.title}"?</p>
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-md flex items-center justify-center z-50 animate-fade-in">
+          <div className="bg-white/10 backdrop-blur-xl rounded-2xl shadow-2xl p-8 w-96 border border-white/20 transform transition-all duration-300 animate-modal-in hover:shadow-purple-500/10 hover:border-white/30">
+            <h3 className="text-2xl font-bold mb-4 text-white">Confirm Delete</h3>
+            <p className="text-white/70 mb-6">Are you sure you want to delete "{deleteConfirmation.title}"?</p>
             <div className="flex justify-end gap-2">
               <button
                 onClick={() => setDeleteConfirmation(null)}
-                className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
+                className="px-6 py-2 text-sm font-medium text-white/90 bg-white/10 rounded-xl hover:bg-white/20 backdrop-blur-sm transition-all duration-300 border border-white/10 hover:border-white/20"
               >
                 Cancel
               </button>
               <button
                 onClick={() => handleDelete(deleteConfirmation)}
-                className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700"
+                className="px-6 py-2 text-sm font-medium text-white bg-gradient-to-r from-red-600/80 to-pink-600/80 rounded-xl hover:from-red-600 hover:to-pink-600 transition-all duration-300 backdrop-blur-sm shadow-lg hover:shadow-red-500/20"
               >
                 Delete
               </button>
