@@ -14,7 +14,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Connect to MongoDB
-MONGO_URI = "mongodb+srv://new_user:kNr9VKfT45gXS9EC@mycluster.z2n0s.mongodb.net/?retryWrites=true&w=majority&appName=MyCluster"
+MONGO_URI = "mongodb+srv://new_user:<pwd>@mycluster.z2n0s.mongodb.net/?retryWrites=true&w=majority&appName=MyCluster"
 client = MongoClient(MONGO_URI)
 db = client["bookstore"]
 collection = db["books"]
